@@ -160,7 +160,6 @@ def chat():
         API_KEY = os.getenv("OPENROUTER_API_KEY")
         if not API_KEY:
             logger.error("API key still not found in environment variables!")
-            # Use fallback response instead of error
             fallback_response = get_fallback_response(user_message)
             chat_histories[session_id].append({"role": "assistant", "content": fallback_response})
             return jsonify({"response": fallback_response})
@@ -172,25 +171,25 @@ def chat():
     history_limit = 10
     messages.extend(chat_histories[session_id][-history_limit:])
     
-    # Updated headers for OpenRouter
+    # OpenRouter headers - simplified to essential ones with the proper authentication format
     headers = {
         "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": request.host_url or "https://riya-chat.up.railway.app/",
-        "X-Title": "Riya Chat Bot",
-        "OpenAI-Organization": "org-JTiiXBeFzaNCkIbqqMCqImHo"
+        "Content-Type": "application/json"
     }
     
-    # Try a different model that's more likely to be available
+    # Log the actual Authorization header value (first 15 chars only) for debugging
+    auth_header = f"Bearer {API_KEY}"
+    logger.info(f"Using Authorization header: {auth_header[:15]}...")
+    
     payload = {
-        "model": "openai/gpt-3.5-turbo",  # Changed from meta-llama/llama-3-8b-instruct to a more widely available model
+        "model": "openai/gpt-3.5-turbo",
         "messages": messages,
         "temperature": 0.7,
         "max_tokens": 1000
     }
     
     try:
-        logger.info(f"Sending request to OpenRouter API with key starting: {API_KEY[:5]}...")
+        logger.info(f"Sending request to OpenRouter API...")
         response = requests.post(API_URL, json=payload, headers=headers)
         
         if response.status_code != 200:
@@ -231,16 +230,6 @@ def chat():
         error_msg = str(e)
         logger.error(f"API Error: {error_msg}")
         
-        # Try with a fallback or alternative solution
-        if "401" in error_msg:
-            # Try to get API key again in case it was updated
-            new_api_key = os.getenv("OPENROUTER_API_KEY")
-            if new_api_key and new_api_key != API_KEY:
-                logger.info("Trying with refreshed API key...")
-                API_KEY = new_api_key
-                # Could retry the request here, but for now just return fallback
-        
-        # Return fallback response instead of error message
         fallback_response = get_fallback_response(user_message)
         chat_histories[session_id].append({"role": "assistant", "content": fallback_response})
         return jsonify({"response": fallback_response})
@@ -281,22 +270,40 @@ def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
+def is_valid_api_key_format(key):
+    """Check if the API key follows the expected format"""
+    if not key:
+        return False
+    
+    # OpenRouter API keys typically start with "sk-or-"
+    if not key.startswith("sk-or-"):
+        return False
+    
+    # API keys should be reasonably long
+    if len(key) < 20:
+        return False
+    
+    return True
+
 # Health check endpoint to verify API key
 @app.route('/api/health', methods=['GET'])
 def health_check():
     if not API_KEY:
         return jsonify({
-            "status": "warning",
+            "status": "error",
             "message": "API key not configured",
             "api_key_present": False
         })
     
+    is_valid_format = is_valid_api_key_format(API_KEY)
+    
     return jsonify({
-        "status": "ok",
+        "status": "ok" if is_valid_format else "warning",
         "message": "Service is running",
         "api_key_present": True,
         "api_key_length": len(API_KEY),
-        "api_key_prefix": API_KEY[:5] + "..."
+        "api_key_prefix": API_KEY[:5] + "...",
+        "api_key_format_valid": is_valid_format
     })
 
 @app.route('/api/test-key', methods=['GET'])
@@ -317,24 +324,25 @@ def test_api_key():
         {"role": "user", "content": "Say 'Hello, API test successful!'"}
     ]
     
-    # Updated headers for OpenRouter
+    # Simplified headers
     headers = {
         "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-        "HTTP-Referer": request.host_url or "https://riya-chat.up.railway.app/",
-        "X-Title": "Riya Chat Bot API Test",
-        "OpenAI-Organization": "org-JTiiXBeFzaNCkIbqqMCqImHo"
+        "Content-Type": "application/json"
     }
     
+    # Log the actual Authorization header value (first 15 chars only)
+    auth_header = f"Bearer {API_KEY}"
+    logger.info(f"Test endpoint using Authorization header: {auth_header[:15]}...")
+    
     payload = {
-        "model": "openai/gpt-3.5-turbo",  # Using a more widely available model
+        "model": "openai/gpt-3.5-turbo",
         "messages": messages,
         "temperature": 0.7,
         "max_tokens": 50
     }
     
     try:
-        logger.info(f"Testing API key starting with: {API_KEY[:5]}...")
+        logger.info(f"Testing OpenRouter API connection...")
         response = requests.post(API_URL, json=payload, headers=headers)
         
         test_result = {
@@ -367,6 +375,33 @@ def test_api_key():
             "api_key_length": len(API_KEY),
             "api_key_prefix": API_KEY[:5] + "..."
         })
+
+@app.route('/api/debug-key', methods=['GET'])
+@admin_login_required
+def debug_api_key():
+    """Admin-only endpoint to debug API key issues without exposing the full key"""
+    global API_KEY
+    
+    # Refresh API key from environment variables
+    env_api_key = os.getenv("OPENROUTER_API_KEY")
+    
+    # Check if the API key has special characters or whitespace issues
+    current_key_info = {
+        "in_memory_key_length": len(API_KEY) if API_KEY else 0,
+        "env_key_length": len(env_api_key) if env_api_key else 0,
+        "in_memory_key_prefix": API_KEY[:5] + "..." if API_KEY else "None",
+        "env_key_prefix": env_api_key[:5] + "..." if env_api_key else "None",
+        "in_memory_key_format_valid": is_valid_api_key_format(API_KEY),
+        "env_key_format_valid": is_valid_api_key_format(env_api_key),
+        "in_memory_key_has_spaces": API_KEY.startswith(" ") or API_KEY.endswith(" ") if API_KEY else False,
+        "env_key_has_spaces": env_api_key.startswith(" ") or env_api_key.endswith(" ") if env_api_key else False
+    }
+    
+    return jsonify({
+        "status": "debug",
+        "key_info": current_key_info,
+        "api_url": API_URL
+    })
 
 if __name__ == '__main__':
     # Get port from environment variable or use 5000 as default
