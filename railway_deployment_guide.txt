@@ -1,0 +1,212 @@
+# RIYA CHAT BOT - RAILWAY DEPLOYMENT GUIDE
+===========================================================
+
+This guide provides step-by-step instructions for deploying the Riya Chat Bot to Railway platform.
+
+## TABLE OF CONTENTS
+
+1. Preparing Your Code for Railway
+2. Pushing to GitHub
+3. Deploying on Railway
+4. Setting Up Environment Variables
+5. Troubleshooting Common Issues
+
+## 1. PREPARING YOUR CODE FOR RAILWAY
+------------------------------------------
+
+### 1.1. Create a Procfile
+
+Railway needs a Procfile to know how to start your application. Create a file named 'Procfile' (no extension) with the following content:
+
+```
+web: gunicorn app:app
+```
+
+### 1.2. Update app.py for Railway Compatibility
+
+Make sure your app.py is configured to:
+- Get the PORT from environment variables
+- Listen on all network interfaces (0.0.0.0)
+- Handle X-Forwarded-For headers for proper IP detection
+- Get admin credentials from environment variables
+- Turn off debug mode in production
+
+Key changes we made:
+- Changed `app.run(debug=True)` to `app.run(host='0.0.0.0', port=port, debug=False)`
+- Added `port = int(os.environ.get('PORT', 5000))` to get the port from environment variables
+- Updated IP address detection to use X-Forwarded-For header
+- Set admin credentials to use environment variables with fallbacks
+
+### 1.3. Set Up .gitignore
+
+Create a .gitignore file to exclude sensitive files and unnecessary data:
+
+```
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+
+# Local data - keep directory structure but ignore contents
+data/*.json
+!data/.gitkeep
+
+# Logs
+*.log
+
+# Session files
+flask_session/
+```
+
+### 1.4. Preserve the data Directory Structure
+
+Create a .gitkeep file in the data directory to ensure the directory structure is maintained:
+
+```
+mkdir -p data
+touch data/.gitkeep
+```
+
+## 2. PUSHING TO GITHUB
+------------------------------------------
+
+Push your project to GitHub using these commands:
+
+```bash
+# Navigate to your project directory
+cd Chat-bot
+
+# Initialize a git repository (if not already done)
+git init
+
+# Add all files
+git add .
+
+# Commit the files
+git commit -m "Initial commit for Railway deployment"
+
+# Add your GitHub repository as remote
+# Replace YOUR_USERNAME with your GitHub username
+git remote add origin https://github.com/rohitgunthal18/Chat-bot.git
+
+# Push to GitHub
+git push -u origin main
+```
+
+If you're using a different branch (like master instead of main):
+```bash
+git push -u origin master
+```
+
+## 3. DEPLOYING ON RAILWAY
+------------------------------------------
+
+### 3.1. Sign Up for Railway
+
+1. Visit [Railway.app](https://railway.app/)
+2. Sign up with your GitHub account
+
+### 3.2. Create a New Project
+
+1. Click "New Project" in the Railway dashboard
+2. Select "Deploy from GitHub repo"
+3. Choose your Chat-bot repository
+4. Railway will automatically detect your Procfile and deploy your application
+
+### 3.3. Monitor Deployment
+
+1. Railway will show you the deployment progress
+2. You can view logs to troubleshoot any issues
+3. Once deployed, Railway will provide you with a URL to access your application
+
+## 4. SETTING UP ENVIRONMENT VARIABLES
+------------------------------------------
+
+### 4.1. Add Required Environment Variables
+
+In your Railway project dashboard:
+
+1. Go to the "Variables" tab
+2. Add the following variables:
+
+- `OPENROUTER_API_KEY` = your_openrouter_api_key
+- `SECRET_KEY` = a_random_secret_key
+- `ADMIN_USERNAME` = xrohia
+- `ADMIN_PASSWORD_HASH` = (the hash of "4482@AdmiN", already in the code)
+
+### 4.2. Managing Variables
+
+- Changes to environment variables will trigger a redeployment
+- You can edit or delete variables at any time from the dashboard
+
+## 5. TROUBLESHOOTING COMMON ISSUES
+------------------------------------------
+
+### 5.1. App Not Starting
+
+- Check the logs in the Railway dashboard
+- Ensure all required environment variables are set
+- Verify your Procfile is correctly formatted (no file extension, correct command)
+
+### 5.2. Database/Storage Issues
+
+- Check if the data directory is properly created on the deployment
+- For production use, consider switching to a database service instead of file-based storage
+- You might need to initialize the JSON files on first deployment
+
+### 5.3. API Key Issues
+
+- Verify the `OPENROUTER_API_KEY` is correctly set in environment variables
+- Check logs for any authentication errors with the OpenRouter API
+
+### 5.4. Session Management Issues
+
+- Ensure `SECRET_KEY` is properly set
+- For production, consider using a persistent session store
+
+### 5.5. Admin Dashboard Access Issues
+
+- Confirm the `ADMIN_USERNAME` and `ADMIN_PASSWORD_HASH` are correctly set
+- Try clearing your browser cookies if you experience login problems
+
+## ADDITIONAL NOTES FOR PRODUCTION
+------------------------------------------
+
+1. **Persistent Storage**: 
+   - The current implementation uses JSON files for storage which is not ideal for production
+   - Consider migrating to a database service (PostgreSQL, MongoDB, etc.)
+
+2. **Session Management**:
+   - For better session management, consider using Redis or a similar service
+
+3. **Scaling**:
+   - Railway can automatically scale your application if needed
+
+4. **Monitoring**:
+   - Check Railway's metrics to monitor your application's performance
+
+5. **Custom Domain**:
+   - You can set up a custom domain for your application in Railway's settings
+
+6. **SSL/HTTPS**:
+   - Railway provides SSL certificates automatically for all deployments
+
+Good luck with your deployment! If you encounter issues not covered in this guide, check the Railway documentation or contact their support team. 

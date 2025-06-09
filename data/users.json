@@ -1,0 +1,159 @@
+{
+  "total_visits": 22,
+  "users": [
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T19:58:33.085985",
+      "action": "popup_continue",
+      "session_id": "760e50f5-a86f-445e-b013-dc35aa5c6740"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:00:10.754057",
+      "action": "popup_continue",
+      "session_id": "760e50f5-a86f-445e-b013-dc35aa5c6740"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:00:48.900765",
+      "action": "popup_continue",
+      "session_id": "760e50f5-a86f-445e-b013-dc35aa5c6740"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:01:00.854014",
+      "action": "popup_continue",
+      "session_id": "760e50f5-a86f-445e-b013-dc35aa5c6740"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:04:43.767939",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:07:57.644793",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:08:49.569621",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:08:56.505760",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:09:18.387827",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:10:41.666015",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:11:33.024484",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:11:42.022043",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:15:47.622673",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:16:05.248272",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:16:25.320147",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:16:47.281765",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:17:55.803338",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:23:37.009120",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:29:53.729509",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:31:06.449840",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36 Edg/137.0.0.0",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T20:31:17.586664",
+      "action": "popup_continue",
+      "session_id": "67d66d3d-af66-4c8e-94ba-f728c702a459"
+    },
+    {
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+      "ip_address": "127.0.0.1",
+      "timestamp": "2025-06-09T21:25:33.114270",
+      "action": "popup_continue",
+      "session_id": "0023fa93-260d-47a4-a510-a3c090ae8683"
+    }
+  ]
+}

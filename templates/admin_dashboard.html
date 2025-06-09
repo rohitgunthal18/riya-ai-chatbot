@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Riya Chat Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #ff6b9f;
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logout-btn {
+            background-color: white;
+            color: #ff6b9f;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .stats-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stats-title {
+            color: #ff6b9f;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background-color: #fff9fc;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ffe6f1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b9f;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid #ff6b9f;
+            color: #ff6b9f;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #fff0f7;
+            color: #ff6b9f;
+        }
+
+        tr:hover {
+            background-color: #fff9fc;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .chat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #fff0f7;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chat-session {
+            font-weight: bold;
+            color: #ff6b9f;
+        }
+
+        .chat-time {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .chat-content {
+            padding: 15px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .user-message {
+            background-color: #e0f4ff;
+            text-align: right;
+            border: 1px solid #b0e0ff;
+            margin-left: 20%;
+        }
+
+        .bot-message {
+            background-color: #ffe6f1;
+            border: 1px solid #ffcce6;
+            margin-right: 20%;
+        }
+
+        .user-info {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover,
+        .pagination button.active {
+            background-color: #ff6b9f;
+            color: white;
+            border-color: #ff6b9f;
+        }
+
+        .pagination button:disabled {
+            background-color: #f5f5f5;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Riya Admin Dashboard</h1>
+            <a href="{{ url_for('admin_logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats-container">
+            <h2 class="stats-title">Statistics Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ users_data.total_visits }}</div>
+                    <div class="stat-label">Total Visits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ users_data.users|length }}</div>
+                    <div class="stat-label">Unique Visitors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ chat_data.conversations|length }}</div>
+                    <div class="stat-label">Total Conversations</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'users-tab')">Users</div>
+            <div class="tab" onclick="openTab(event, 'chats-tab')">Conversations</div>
+        </div>
+
+        <div id="users-tab" class="tab-content active">
+            <input type="text" id="user-search" class="search-bar" placeholder="Search users...">
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>Visit Time</th>
+                        <th>IP Address</th>
+                        <th>User Agent</th>
+                        <th>Session ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users_data.users|reverse %}
+                    <tr>
+                        <td>{{ user.timestamp }}</td>
+                        <td>{{ user.ip_address }}</td>
+                        <td>{{ user.user_agent }}</td>
+                        <td>{{ user.session_id }}</td>
+                        <td>{{ user.action }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chats-tab" class="tab-content">
+            <input type="text" id="chat-search" class="search-bar" placeholder="Search conversations...">
+            <div id="chats-container">
+                {% for chat in chat_data.conversations|reverse %}
+                <div class="chat-card">
+                    <div class="chat-header">
+                        <span class="chat-session">Session: {{ chat.session_id }}</span>
+                        <span class="chat-time">{{ chat.timestamp }}</span>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-message user-message">
+                            {{ chat.user_message }}
+                            <div class="user-info">
+                                IP: {{ chat.user_info.ip_address }} | Time: {{ chat.timestamp }}
+                            </div>
+                        </div>
+                        <div class="chat-message bot-message">
+                            {{ chat.ai_response }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Remove active class from all tabs
+            const tabs = document.getElementsByClassName("tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+
+            // Show the current tab and add active class to the button
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // User search functionality
+        document.getElementById('user-search').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const table = document.getElementById('users-table');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                let shouldShow = false;
+                const cells = row.getElementsByTagName('td');
+                
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+                        shouldShow = true;
+                        break;
+                    }
+                }
+                
+                row.style.display = shouldShow ? '' : 'none';
+            }
+        });
+
+        // Chat search functionality
+        document.getElementById('chat-search').addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const chatCards = document.querySelectorAll('.chat-card');
+            
+            chatCards.forEach(card => {
+                const content = card.textContent.toLowerCase();
+                card.style.display = content.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html> 
