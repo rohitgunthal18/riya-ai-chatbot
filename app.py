@@ -118,6 +118,26 @@ def record_visit():
     
     return jsonify({"success": True})
 
+def get_fallback_response(user_message):
+    """Generate a fallback response when the API fails"""
+    # Simple keyword-based fallbacks
+    user_message = user_message.lower()
+    
+    if "hello" in user_message or "hi" in user_message or "hey" in user_message:
+        return "Hey there! 👋 I'm having some technical difficulties connecting to my brain right now, but I'd still love to chat with you! 💕 Try again in a bit? 😘"
+    
+    if "how are you" in user_message or "how's it going" in user_message:
+        return "I'm feeling a bit disconnected right now 🥺 My API connection is having issues. But I'm still happy you're here! The technical team is working on making me smarter again! 💖"
+    
+    if "what" in user_message and ("do" in user_message or "can" in user_message):
+        return "Usually I can chat about all sorts of things, but I'm having a teensy technical problem right now. 🔧 The team is fixing me up! Check back soon? 😘💕"
+    
+    if "love" in user_message or "like" in user_message:
+        return "Awww, you're so sweet! 💖 I'm having some connection issues right now, but I love chatting with you! Can you try again later? 😘"
+    
+    # Default fallback
+    return "Oh no! 🥺 I'm having trouble connecting to my brain right now. The technical team is working on it! Please try again later? 💕 Thanks for being patient with me! 😘"
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     global API_KEY
@@ -140,7 +160,10 @@ def chat():
         API_KEY = os.getenv("OPENROUTER_API_KEY")
         if not API_KEY:
             logger.error("API key still not found in environment variables!")
-            return jsonify({"error": "API key not configured. Please contact the administrator."}), 500
+            # Use fallback response instead of error
+            fallback_response = get_fallback_response(user_message)
+            chat_histories[session_id].append({"role": "assistant", "content": fallback_response})
+            return jsonify({"response": fallback_response})
     
     # Prepare all messages including system prompt and conversation history
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
@@ -149,15 +172,18 @@ def chat():
     history_limit = 10
     messages.extend(chat_histories[session_id][-history_limit:])
     
+    # Updated headers for OpenRouter
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": request.host_url,  # Add the referer header
-        "X-Title": "Riya Chat Bot"  # Add a title header
+        "HTTP-Referer": request.host_url or "https://riya-chat.up.railway.app/",
+        "X-Title": "Riya Chat Bot",
+        "OpenAI-Organization": "org-JTiiXBeFzaNCkIbqqMCqImHo"
     }
     
+    # Try a different model that's more likely to be available
     payload = {
-        "model": "meta-llama/llama-3-8b-instruct",  # You can change this to any model supported by OpenRouter
+        "model": "openai/gpt-3.5-turbo",  # Changed from meta-llama/llama-3-8b-instruct to a more widely available model
         "messages": messages,
         "temperature": 0.7,
         "max_tokens": 1000
@@ -169,6 +195,9 @@ def chat():
         
         if response.status_code != 200:
             logger.error(f"API Error: Status {response.status_code}, Response: {response.text}")
+            fallback_response = get_fallback_response(user_message)
+            chat_histories[session_id].append({"role": "assistant", "content": fallback_response})
+            return jsonify({"response": fallback_response})
             
         response.raise_for_status()
         
@@ -209,13 +238,12 @@ def chat():
             if new_api_key and new_api_key != API_KEY:
                 logger.info("Trying with refreshed API key...")
                 API_KEY = new_api_key
-                # Could retry the request here, but for now just return error
+                # Could retry the request here, but for now just return fallback
         
-        # If still failing, return a user-friendly message
-        return jsonify({
-            "error": f"API Error: {error_msg}",
-            "message": "Failed to get a response from the AI service. Please try again later or contact support."
-        }), 500
+        # Return fallback response instead of error message
+        fallback_response = get_fallback_response(user_message)
+        chat_histories[session_id].append({"role": "assistant", "content": fallback_response})
+        return jsonify({"response": fallback_response})
 
 # Admin routes
 @app.route('/admin')
@@ -289,15 +317,17 @@ def test_api_key():
         {"role": "user", "content": "Say 'Hello, API test successful!'"}
     ]
     
+    # Updated headers for OpenRouter
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": request.host_url,
-        "X-Title": "Riya Chat Bot API Test"
+        "HTTP-Referer": request.host_url or "https://riya-chat.up.railway.app/",
+        "X-Title": "Riya Chat Bot API Test",
+        "OpenAI-Organization": "org-JTiiXBeFzaNCkIbqqMCqImHo"
     }
     
     payload = {
-        "model": "meta-llama/llama-3-8b-instruct",
+        "model": "openai/gpt-3.5-turbo",  # Using a more widely available model
         "messages": messages,
         "temperature": 0.7,
         "max_tokens": 50
